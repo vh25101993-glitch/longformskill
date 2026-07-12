@@ -1,4 +1,4 @@
 interface:
-  display_name: "Longform Report (tự nghiên cứu)"
-  short_description: "Báo cáo article HTML dài (15-40 chương, Chart.js + minimap + trình chiếu)"
-  default_prompt: "Viết báo cáo longform cho chủ đề [TOPIC] với [N] chương"
+  display_name: "Longform Financial Desk Research"
+  short_description: "Nghiên cứu bàn đa nguồn + paper/HTML kinh tế tài chính có evidence audit"
+  default_prompt: "Dùng skill Longform để nghiên cứu chuyên sâu chủ đề [TOPIC], chọn profile phù hợp, fact-check dữ liệu và xuất paper hoặc HTML."
