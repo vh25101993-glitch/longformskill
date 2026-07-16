@@ -14,7 +14,7 @@ description: Nghiên cứu bàn đa nguồn evidence-first và xuất bản báo
 Phiên bản này hợp nhất:
 
 - **Research engine:** query matrix, source hierarchy, evidence ledger, data dictionary, comparability, uncertainty register và claim-level audit.
-- **Publishing engine:** dark Longform HTML, KPI cards, Chart.js/ECharts, minimap, timeline, glossary, print mode và QA Playwright.
+- **Publishing engine:** dark Longform HTML, KPI cards, Chart.js/ECharts, minimap, timeline, glossary, **Scenario & Sensitivity Lab**, print mode và QA Playwright.
 
 Mục tiêu: báo cáo vừa **paper-ready** về kết cấu, vừa **audit-ready** về bằng chứng.
 
@@ -158,6 +158,8 @@ Quy tắc:
 - So sánh quốc tế phải có comparability matrix.
 - Asset history tách price return, FX effect, premium/spread, transaction cost và real return khi có dữ liệu.
 - Policy analysis dùng chain: policy → channel → intermediate indicator → outcome → side effect.
+- Khi tồn tại quan hệ định lượng có thể bảo vệ được, HTML phải có **Scenario & Sensitivity Lab** để người đọc điều chỉnh giả định và quan sát kết quả. Biến `FACT` chỉ làm baseline; biến người dùng thay đổi phải gắn nhãn `SCENARIO`.
+- Không tạo mô hình tương tác chỉ để làm báo cáo sinh động. Nếu không có công thức, hệ số hoặc logic truyền dẫn đủ cơ sở, dùng kịch bản rời rạc Bear/Base/Bull và công bố giới hạn thay vì tạo đường cong giả.
 
 Tone: **người kể chuyện số liệu, không áp đặt kết luận**.
 
@@ -192,13 +194,42 @@ Xem `references/desk_research_04_audit_templates.md`.
 - copy `assets/article_template.html`;
 - mỗi chương là một `<section>`;
 - component density 2-4/chương;
-- KPI, table, chart, callout, timeline, glossary;
+- KPI, table, chart, callout, timeline, glossary, scenario/sensitivity lab;
 - numbered citations cho bài nhiều số;
 - minimap/progress/presentation đồng bộ section;
 - responsive mobile-first, print mode, lazy loading;
 - chart có source, unit, period, transformation, limitation và fallback table.
 
 Theme mặc định: dark slate-900; Amber cho bài tư duy/nhân quả, Blue cho policy/data.
+
+### Scenario & Sensitivity Lab
+
+Kích hoạt khi báo cáo có ít nhất một kết quả phụ thuộc rõ vào giả định có thể thay đổi, ví dụ: tăng trưởng doanh thu, biên lợi nhuận, NIM, cost of credit, lãi suất, tỷ giá, multiple, cap rate, lạm phát hoặc chi phí vốn.
+
+Mỗi lab tối thiểu phải có:
+
+1. **Baseline:** giá trị gốc, nguồn, kỳ và trạng thái `FACT`/`DERIVED`.
+2. **Controls:** 1-5 biến; mỗi biến có label, đơn vị, min, max, step, default và lý do chọn miền.
+3. **Model:** một hàm tính thuần, công thức công khai, không dùng số ngẫu nhiên và không gọi mạng.
+4. **Outputs:** KPI kết quả cập nhật trực tiếp, có đơn vị và quy tắc làm tròn.
+5. **Dynamic chart:** ít nhất một trong các dạng:
+   - one-way sensitivity line với điểm hiện tại;
+   - tornado chart theo thay đổi so với baseline;
+   - breakeven curve;
+   - two-way heatmap nếu dùng ECharts hoặc plugin đã khóa phiên bản;
+   - waterfall bridge từ baseline sang scenario.
+6. **Actions:** Reset; preset Bear/Base/Bull khi phù hợp; xuất JSON/CSV là tùy chọn.
+7. **Disclosure:** nhãn `SCENARIO`, công thức, giả định giữ nguyên, limitation và fallback table.
+
+Quy tắc kỹ thuật:
+
+- `input[type="range"]` phải đi cùng ô số hoặc `<output>`; hỗ trợ bàn phím và mobile.
+- Cập nhật bằng `chart.data` + `chart.update('none')`; không tạo lại chart sau mỗi lần kéo.
+- Dùng `requestAnimationFrame` hoặc debounce khi có nhiều control.
+- Một biến được chọn làm trục x; các biến còn lại giữ tại giá trị hiện hành để biểu diễn quan hệ ceteris paribus.
+- Không trộn điểm scenario vào chuỗi actual mà không phân biệt màu/nét/legend.
+- Mọi giá trị sinh từ control là `SCENARIO` hoặc `DERIVED-SCENARIO`, không được trình bày như forecast chính thức.
+- Xem `references/interactive_sensitivity.md`; các chart tĩnh khác vẫn dùng `references/chart_recipes.md`.
 
 ### QA bắt buộc
 
@@ -217,6 +248,15 @@ node "$SKILL_DIR/scripts/qa_article.js" \
 ```
 
 Sửa mọi raw token, JS error, chart trống, nav sai, clipping/overflow trước khi hoàn thành.
+
+Với Scenario & Sensitivity Lab, kiểm tra thêm:
+
+- thay đổi từng control làm KPI và chart thay đổi đúng chiều theo công thức;
+- Reset khôi phục baseline;
+- preset không vượt min/max;
+- output không sinh `NaN`, `Infinity` hoặc đơn vị sai;
+- chart resize đúng tại 390 px, 768 px và desktop;
+- fallback table hiển thị được khi Chart.js/ECharts không tải.
 
 ### Research package tối thiểu
 
@@ -260,6 +300,8 @@ Không đưa lời khuyên đầu tư cá nhân hóa khi dữ liệu/suitability
 
 Mỗi chart ghi: chart ID, title, analytical question, type, metrics, unit, geography, period/frequency, source IDs, transformations, data status, interpretation, limitations và fallback table.
 
+Với chart tương tác bổ sung: `interactive=true`, input parameters, baseline, min/max/step, formula/model version, output metrics, preset definitions, assumptions held constant và expected direction. Chart manifest phải đủ để tái tạo cùng kết quả từ cùng input.
+
 # Hard fail
 
 Không publish nếu:
@@ -273,6 +315,9 @@ Không publish nếu:
 - citation không hỗ trợ claim;
 - dùng dữ liệu cũ như hiện tại;
 - placeholder/JS error/chart trống/overlap;
+- control không hoạt động, sinh `NaN`/`Infinity`, hoặc kết quả không khớp công thức;
+- scenario chart không công bố baseline, miền giả định, đơn vị hoặc limitation;
+- trộn dữ liệu `FACT` và `SCENARIO` khiến người đọc hiểu nhầm;
 - recommendation mạnh hơn bằng chứng;
 - lộ prompt hoặc hướng dẫn nội bộ.
 
@@ -297,6 +342,7 @@ Publishing engine hiện có:
 - `assets/article_template.html`
 - `references/components.md`
 - `references/chart_recipes.md`
+- `references/interactive_sensitivity.md`
 - `references/themes.md`
 - `references/navigation.md`
 - `references/citations.md`
