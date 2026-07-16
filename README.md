@@ -1,6 +1,6 @@
 # Longform Report — Skill
 
-Skill tạo **báo cáo tự nghiên cứu dạng article HTML dài** (15–40 chương): dark theme, Chart.js charts, minimap mục lục, progress bar và chế độ trình chiếu (slideshow). Tổng hợp pattern từ 5 báo cáo thực tế, tái sử dụng được cho **bất kỳ chủ đề nào** — tài chính VN, kinh tế Trung Quốc, giáo dục, xã hội...
+Skill tạo **báo cáo tự nghiên cứu dạng article HTML dài** (15–40 chương): dark theme, Chart.js/ECharts, minimap mục lục, progress bar, chế độ trình chiếu và **Scenario & Sensitivity Lab** với input điều chỉnh trực tiếp. Tổng hợp pattern từ 5 báo cáo thực tế, tái sử dụng được cho **bất kỳ chủ đề nào** — tài chính VN, kinh tế Trung Quốc, giáo dục, xã hội...
 
 Mỗi bài đều đứng trên **hai trục song song**:
 - **Số liệu thật** — mỗi con số có nguồn, đối chiếu được (Bước 5).
@@ -20,6 +20,7 @@ longformskill/
 ├── references/
 │   ├── components.md                 # Catalog component (CORE + nâng cao) + checklist
 │   ├── chart_recipes.md              # Recipe Chart.js 4.4.1 (bar/line/radar/mixed) cho dark theme
+│   ├── interactive_sensitivity.md    # Slider/preset + KPI + chart độ nhạy cập nhật trực tiếp
 │   ├── themes.md                     # Family Amber/Blue + bảng hero gradient mood
 │   ├── navigation.md                 # Minimap + progress + presentation + đồng bộ section
 │   ├── citations.md                  # 2 chế độ trích nguồn (numerated vs plain)
@@ -87,7 +88,7 @@ Workflow 6 bước (agent tự chạy theo `SKILL.md`):
 |---|---|---|
 | 1 | Chốt outline + theme (family Amber/Blue, hero mood) | ✅ |
 | 2 | Copy template + fill hero/meta tokens | ✅ |
-| 3 | Viết các section (component density 2–4/chương) | ✅ |
+| 3 | Viết các section; thêm Scenario & Sensitivity Lab khi kết quả phụ thuộc giả định có mô hình | ✅ theo điều kiện |
 | 4 | Tài liệu tham khảo + đồng bộ minimap (3 chỗ khớp nhau) | ✅ |
 | **5** | **Fact-check số liệu** — trích claim định lượng → grep mâu thuẫn nội bộ → đối chiếu nguồn ngoài | ✅ (bài có ≥10 con số) |
 | **5b** | **Fact-check lý thuyết học thuật** — tên/tác giả/năm/nội dung, chạy song song Bước 5 | ✅ (bài phân tích hành vi, ≥3 lý thuyết) |
@@ -103,6 +104,7 @@ Workflow 6 bước (agent tự chạy theo `SKILL.md`):
 |---|---|---|---|
 | **Số liệu thật** | `references/fact_check.md` | con số, ngày, tỷ lệ, Điều luật, chỉ số BCTC | Bài có ≥10 con số / bài pháp luật / bài kêu gọi đối chiếu báo cáo CK |
 | **Học thuật thật** | `references/academic_foundations.md` | tên lý thuyết, tác giả, năm tác phẩm, số liệu minh họa | Bài phân tích hành vi người / bài cơ chế nhân quả / ≥3 lý thuyết |
+| **Mô hình minh bạch** | `references/interactive_sensitivity.md` | baseline, input range, formula, output và độ nhạy | Bài HTML có kịch bản định lượng hoặc định giá |
 
 Catalog lý thuyết đã verify sẵn trong `academic_foundations.md` (Kahneman, Cialdini, Shefrin & Statman, Dunning-Kruger, Festinger...) — kèm link nguồn gốc để copy đúng tên + tác giả + năm.
 
