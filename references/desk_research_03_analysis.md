@@ -66,7 +66,75 @@ Bắt buộc công bố phase criteria, comparability matrix, thay đổi chỉ 
 
 ## Profile: industry-market
 
-Executive Summary → Scope/taxonomy → Data Quality → Market size/growth → Structure/competition → Economics → Drivers → Risks/scenarios → Implications.
+Profile này phải kết hợp **bản đồ công nghiệp** và **market research**, không chỉ kể tên doanh nghiệp hoặc trình bày một TAM duy nhất.
+
+### Kiến trúc mặc định
+
+1. Cover/meta và as-of date
+2. Executive snapshot: 5-7 phát hiện định lượng, 3-5 caveat, market-map thumbnail
+3. Scope, taxonomy và định nghĩa chỉ tiêu
+4. Data Quality, data vintage và market-size reconciliation
+5. Market size, growth và forecast range
+6. Value chain: layer, economics, margin structure, capital intensity, concentration
+7. Technology segmentation
+8. Deployment model: cloud/private/edge hoặc taxonomy phù hợp
+9. Buyer/vertical segmentation và use cases
+10. Geography, industrial clusters và dependencies
+11. Competitive landscape và company strategy map
+12. Funding, M&A, capex và adoption
+13. Bottlenecks, profit pools, switching costs và bargaining power
+14. Alternative explanations và anti-thesis
+15. Scenarios, triggers và invalidation conditions
+16. Stakeholder action matrix
+17. Uncertainty, source register và appendix
+
+### Ba bản đồ bắt buộc
+
+1. **Value-chain map:** tài nguyên đầu vào -> hạ tầng -> nền tảng -> phân phối -> ứng dụng/dịch vụ.
+2. **Geographic-control map:** nơi nghiên cứu, thiết kế, sản xuất, vốn, triển khai và kiểm soát pháp lý.
+3. **Demand map:** buyer, use case, deployment model, willingness-to-pay, adoption và rào cản.
+
+Không được dùng một trục thay cho trục khác. Một quốc gia dẫn đầu nghiên cứu không tự động dẫn đầu sản xuất hoặc thương mại hóa; một vertical market không phải là một lớp cộng dồn của value chain nếu taxonomy giao cắt.
+
+### Market-size discipline
+
+- Tách rõ market revenue, enterprise spend, private investment, corporate investment, capex, M&A và valuation.
+- Dùng range hoặc nhóm estimate so sánh được; không hòa trộn vendor forecast khác taxonomy thành một con số chính xác giả.
+- Nếu tổng các lớp bằng TAM, phải có bridge và quy tắc loại trùng.
+- Nếu một segment lớn hơn parent category, giải thích giao cắt taxonomy hoặc sửa dữ liệu.
+- Mọi forecast có source vintage, methodology và confidence.
+
+### Competition and company map
+
+Mỗi công ty nên được mô tả theo các trường: layer, product, buyer, distribution, proprietary asset, dependence, capital intensity, monetization, switching cost, regulatory exposure và key risk.
+
+Bảng valuation/funding phải tách event date, post-money/pre-money, round size, cumulative funding, public market cap và strategic commitment. Không xếp strategic investment vào M&A.
+
+### Stakeholder action matrix
+
+Tối thiểu tách ba nhóm khi phù hợp:
+
+- doanh nghiệp/C-suite;
+- nhà đầu tư hoặc capital allocator;
+- nhà hoạch định chính sách/định chế công.
+
+Mỗi hành động có target, evidence IDs, owner, horizon, KPI, trade-off và trigger to revise. Không đưa tỷ lệ ngân sách cứng nếu không có benchmark phù hợp theo ngành và quy mô.
+
+### Visual package tối thiểu
+
+- 1 value-chain map;
+- 1 market-size/growth chart có forecast shading;
+- 1 segmentation chart;
+- 1 geography chart/map;
+- 1 competition/company map;
+- 1 funding/adoption chart;
+- 1 bottleneck/profit-pool chart;
+- 1 scenario chart hoặc discrete scenario matrix;
+- bảng fallback cho mọi chart.
+
+Với paper/PDF dài, ưu tiên cover, mục lục, header/footer, page number, figure/table numbering và source note. Với HTML, giữ navigation/minimap/progress và responsive layout.
+
+Xem `references/industry_market_profile.md` và `references/desk_research_02_data.md`.
 
 ## Profile: document-consensus
 
@@ -79,5 +147,6 @@ Mỗi chương phải trả lời một câu hỏi rõ, dùng cấu trúc: câu 
 - Không dùng tiêu đề chung chung như “Phân tích sâu”.
 - Không lặp cùng một con số ở nhiều chương nếu không có mục đích.
 - Executive Summary chỉ chứa kết luận đã được chứng minh trong thân bài.
+- Executive Summary của profile `industry-market` nên có hộp 5 phát hiện chính, nhưng mỗi phát hiện phải map đến claim ID và caveat.
 - Recommendation phải gắn evidence IDs, owner, horizon, KPI và revision trigger.
 - Bản cuối không để lộ prompt, placeholder hoặc hướng dẫn nội bộ.
