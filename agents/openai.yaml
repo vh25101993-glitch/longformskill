@@ -1,4 +1,4 @@
 interface:
-  display_name: "Longform Financial Desk Research"
-  short_description: "Nghiên cứu bàn đa nguồn + paper/HTML kinh tế tài chính có evidence audit"
-  default_prompt: "Dùng skill Longform để nghiên cứu chuyên sâu chủ đề [TOPIC], chọn profile phù hợp, fact-check dữ liệu và xuất paper hoặc HTML."
+  display_name: "Longform Financial-Economic Research"
+  short_description: "Nghiên cứu đa nguồn, paper/HTML và Research Atlas có evidence audit"
+  default_prompt: "Dùng skill Longform để nghiên cứu chuyên sâu chủ đề [TOPIC], chọn profile phù hợp, fact-check dữ liệu và xuất paper, HTML hoặc Research Atlas khi nội dung cần tái sử dụng."
