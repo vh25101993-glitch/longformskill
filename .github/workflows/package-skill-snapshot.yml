@@ -1,6 +1,9 @@
 name: Package skill snapshot
 
 on:
+  push:
+    branches:
+      - agent/add-narrative-publication-layer
   pull_request:
     branches: [main]
 
@@ -13,5 +16,9 @@ jobs:
         run: |
           rm -rf .git .github
           zip -r longform-skill-snapshot.zip . -x "*/__pycache__/*" "*.pyc"
-      - uses: actions/upload-artifact@v4
-       
+      - name: Upload snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: longform-skill-snapshot
+          path: longform-skill-snapshot.zip
+          if-no-files-found: error
