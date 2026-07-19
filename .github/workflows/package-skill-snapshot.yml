@@ -1,9 +1,6 @@
 name: Package skill snapshot
 
 on:
-  push:
-    branches:
-      - agent/add-narrative-publication-layer
   pull_request:
     branches: [main]
 
