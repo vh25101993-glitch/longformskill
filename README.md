@@ -1,126 +1,97 @@
-# Longform Report — Skill
+# Longform Financial-Economic Research — Skill
 
-Skill tạo **báo cáo tự nghiên cứu dạng article HTML dài** (15–40 chương): dark theme, Chart.js/ECharts, minimap mục lục, progress bar, chế độ trình chiếu và **Scenario & Sensitivity Lab** với input điều chỉnh trực tiếp. Tổng hợp pattern từ 5 báo cáo thực tế, tái sử dụng được cho **bất kỳ chủ đề nào** — tài chính VN, kinh tế Trung Quốc, giáo dục, xã hội...
+Skill tạo báo cáo nghiên cứu kinh tế - tài chính dạng **paper, HTML dài và Research Atlas**. Hệ thống kết hợp:
 
-Mỗi bài đều đứng trên **hai trục song song**:
-- **Số liệu thật** — mỗi con số có nguồn, đối chiếu được (Bước 5).
-- **Học thuật thật** — mỗi lý thuyết dẫn đúng tác giả/năm/nội dung gốc (Bước 5b).
+- nghiên cứu đa nguồn và evidence ledger;
+- claim-level audit, source registry và data dictionary;
+- Chart.js/ECharts, minimap, presentation mode và Scenario & Sensitivity Lab;
+- kiến trúc tri thức tái sử dụng: module, chapter, question, claim, source, misconception, pathway, thesis, glossary, case và interaction rules.
 
-> Đây là gói skill dành cho các agent (Codex / ZCode / Codex CLI...). Trong agent, skill được gọi qua `/longform-report` (alias `/longform`).
+> Trong agent, skill được gọi qua `/longform` hoặc các alias trong `SKILL.md`.
 
----
+## Cấu trúc chính
 
-## Cấu trúc
-
-```
-longformskill/
-├── SKILL.md                          # Workflow 6 bước + style guide + pitfalls
+```text
+longform-report/
+├── SKILL.md
+├── README.md
+├── agents/
+│   └── openai.yaml
 ├── assets/
-│   └── article_template.html         # Template CORE self-contained ({{TOKEN}} placeholder)
+│   └── article_template.html
 ├── references/
-│   ├── components.md                 # Catalog component (CORE + nâng cao) + checklist
-│   ├── chart_recipes.md              # Recipe Chart.js 4.4.1 (bar/line/radar/mixed) cho dark theme
-│   ├── interactive_sensitivity.md    # Slider/preset + KPI + chart độ nhạy cập nhật trực tiếp
-│   ├── themes.md                     # Family Amber/Blue + bảng hero gradient mood
-│   ├── navigation.md                 # Minimap + progress + presentation + đồng bộ section
-│   ├── citations.md                  # 2 chế độ trích nguồn (numerated vs plain)
-│   ├── fact_check.md                 # ⭐ Hậu kiểm số liệu (trục "số liệu thật")
-│   └── academic_foundations.md       # ⭐ Nền tảng học thuật + fact-check lý thuyết (trục "học thuật thật")
-├── scripts/
-│   └── qa_article.js                 # Playwright QA (8 check: token/structure/sections/chart/nav/errors/screenshots)
-└── agents/
-    └── openai.yaml                   # UI metadata (display_name, short_description, default_prompt)
+│   ├── academic_foundations.md
+│   ├── chart_recipes.md
+│   ├── citations.md
+│   ├── components.md
+│   ├── desk_research_01_protocol.md
+│   ├── desk_research_02_data.md
+│   ├── desk_research_03_analysis.md
+│   ├── desk_research_04_audit_templates.md
+│   ├── fact_check.md
+│   ├── industry_market_profile.md
+│   ├── interactive_sensitivity.md
+│   ├── navigation.md
+│   ├── research_atlas.md
+│   └── themes.md
+└── scripts/
+    ├── init_research_project.py
+    ├── qa_article.js
+    ├── qa_research_atlas.py
+    └── qa_research_project.py
 ```
 
----
+## Khởi tạo project thông thường
 
-## Cài đặt
-
-Skill là một thư mục chứa `SKILL.md` + các tài nguyên đi kèm. Đặt vào thư mục skills mà agent quét:
-
-### ZCode
 ```bash
-git clone git@github.com:Thanhtran-165/longformskill.git \
-  ~/.zcode/skills/longform-report
+python "$SKILL_DIR/scripts/init_research_project.py" \
+  --topic "[TOPIC]" \
+  --profile custom \
+  --out ./research-project
 ```
 
-### Codex / Codex CLI
+## Khởi tạo Research Atlas
+
 ```bash
-git clone git@github.com:Thanhtran-165/longformskill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/longform-report"
+python "$SKILL_DIR/scripts/init_research_project.py" \
+  --topic "[TOPIC]" \
+  --profile knowledge-atlas \
+  --out ./research-project
 ```
 
-> ⚠️ **Tên thư mục phải là `longform-report`** để các lệnh copy template / chạy QA dùng `$SKILL_DIR` hoạt động đúng (xem phần *Đường dẫn* bên dưới).
+Profile `knowledge-atlas` tự tạo thư mục `atlas/` và các JSON entity files. Có thể dùng `--atlas` với profile khác khi cần.
 
-Không cần build, không cần dependency ngoài — trừ khi chạy QA script:
+## QA
+
+### Research package
+
+```bash
+python "$SKILL_DIR/scripts/qa_research_project.py" ./research-project
+```
+
+### Research Atlas
+
+```bash
+python "$SKILL_DIR/scripts/qa_research_atlas.py" ./research-project/atlas
+```
+
+### HTML
+
+`qa_article.js` cần Playwright:
 
 ```bash
 npm install playwright --prefix /tmp/qa-runner
 npx playwright install chromium
+node "$SKILL_DIR/scripts/qa_article.js" \
+  --url=file://$PWD/index.html \
+  --output=/tmp/qa-shots
 ```
 
----
+## Nguyên tắc
 
-## Đường dẫn & portability
-
-`SKILL.md` dùng biến `$SKILL_DIR` (thư mục chứa skill) cho mọi lệnh tham chiếu file nội bộ:
-
-```bash
-cp "$SKILL_DIR/assets/article_template.html" {project}/{slug}/index.html
-node "$SKILL_DIR/scripts/qa_article.js" --url=file://{project}/{slug}/index.html --output=/tmp/qa-shots
-```
-
-- **ZCode**: `$SKILL_DIR` = `~/.zcode/skills/longform-report`
-- **Codex**: `$SKILL_DIR` = `${CODEX_HOME:-~/.codex}/skills/longform-report`
-- Nếu skill nằm chỗ khác → đặt `SKILL_DIR` bằng đường dẫn thực tế trên máy.
-
----
-
-## Cách dùng (trong agent)
-
-```
-/longform-report "BĐS dòng tiền VN" 15 chương
-```
-
-Workflow 6 bước (agent tự chạy theo `SKILL.md`):
-
-| Bước | Việc | Bắt buộc |
-|---|---|---|
-| 1 | Chốt outline + theme (family Amber/Blue, hero mood) | ✅ |
-| 2 | Copy template + fill hero/meta tokens | ✅ |
-| 3 | Viết các section; thêm Scenario & Sensitivity Lab khi kết quả phụ thuộc giả định có mô hình | ✅ theo điều kiện |
-| 4 | Tài liệu tham khảo + đồng bộ minimap (3 chỗ khớp nhau) | ✅ |
-| **5** | **Fact-check số liệu** — trích claim định lượng → grep mâu thuẫn nội bộ → đối chiếu nguồn ngoài | ✅ (bài có ≥10 con số) |
-| **5b** | **Fact-check lý thuyết học thuật** — tên/tác giả/năm/nội dung, chạy song song Bước 5 | ✅ (bài phân tích hành vi, ≥3 lý thuyết) |
-| 6 | Verify kỹ thuật (JS parse, canvas count, Playwright QA) | ✅ |
-
-**Tone cốt lõi:** *"Người kể chuyện số liệu, KHÔNG cho ý kiến"* — mô tả quan sát và tỷ lệ, không khuyên mua/bán.
-
----
-
-## Hai trục chất lượng
-
-| Trục | File | Đối tượng | Khi nào bắt buộc |
-|---|---|---|---|
-| **Số liệu thật** | `references/fact_check.md` | con số, ngày, tỷ lệ, Điều luật, chỉ số BCTC | Bài có ≥10 con số / bài pháp luật / bài kêu gọi đối chiếu báo cáo CK |
-| **Học thuật thật** | `references/academic_foundations.md` | tên lý thuyết, tác giả, năm tác phẩm, số liệu minh họa | Bài phân tích hành vi người / bài cơ chế nhân quả / ≥3 lý thuyết |
-| **Mô hình minh bạch** | `references/interactive_sensitivity.md` | baseline, input range, formula, output và độ nhạy | Bài HTML có kịch bản định lượng hoặc định giá |
-
-Catalog lý thuyết đã verify sẵn trong `academic_foundations.md` (Kahneman, Cialdini, Shefrin & Statman, Dunning-Kruger, Festinger...) — kèm link nguồn gốc để copy đúng tên + tác giả + năm.
-
----
-
-## Phối hợp hệ sinh thái skill (optional)
-
-| Skill | Vai trò | Relation |
-|---|---|---|
-| `vn-macro-monthly` | Số liệu vĩ mô VN hàng tháng | Enrich context cho bài tài chính VN |
-| `vn-news-digest` | Thời sự 30 ngày | Enrich số liệu sự kiện gần |
-| `vn-research-dashboard` | Equity dashboard 1 cổ phiếu | KHÁC — dashboard = 1 cổ phiếu ngắn, longform = nhiều chương tư duy |
-| `imagegen` | Tạo cover image | Optional — hero image cho bài quan trọng |
-
----
-
-## License
-
-Cung cấp nguyên mục đích chia sẻ / tái sử dụng. Bạn tự chịu trách nhiệm về tính chính xác của số liệu và lý thuyết trong các bài báo cáo mình tạo ra (skill có sẵn quy trình fact-check ở Bước 5 & 5b — hãy chạy nó).
+- Không bịa dữ liệu.
+- Dữ liệu quan sát, tính toán, ước lượng, mô phỏng và kịch bản phải được gắn nhãn.
+- Claim trọng yếu phải có provenance.
+- Chart và text dùng cùng dataset đã audit.
+- HTML là view; JSON/CSV đã audit là source of truth khi xuất Atlas.
+- Không trình bày heuristic score như xác suất nếu chưa có mô hình xác suất được hiệu chỉnh.
