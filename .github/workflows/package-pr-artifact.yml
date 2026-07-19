@@ -1,0 +1,32 @@
+name: Package PR Skill Artifact
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR content
+        uses: actions/checkout@v4
+
+      - name: Create upload-ready ZIP
+        shell: bash
+        run: |
+          mkdir -p dist/longform-report
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'dist' ./ dist/longform-report/
+          cd dist
+          zip -r longformskill-gpt-upload.zip longform-report
+
+      - name: Upload packaged skill
+        uses: actions/upload-artifact@v4
+        with:
+          name: longformskill-gpt-upload
+          path: dist/longformskill-gpt-upload.zip
+          if-no-files-found: error
+          retention-days: 1
