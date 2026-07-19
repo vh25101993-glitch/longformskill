@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/financial_html_publication.schema.json",
+  "title": "Financial HTML Narrative Publication",
+  "type": "object",
+  "required": ["report", "chapters", "claims", "edges", "counterpoints", "visuals"],
+  "properties": {
+    "report": {
+      "type": "object",
+      "required": ["reportId", "entity", "period", "reportType", "defaultView"],
+      "properties": {
+        "reportId": {"type": "string", "minLength": 1},
+        "entity": {"type": "string", "minLength": 1},
+        "period": {"type": "string", "minLength": 1},
+        "reportType": {"enum": ["quarterly-financials", "company-deep-dive", "bank", "securities", "industry", "macro", "valuation-tool", "dashboard"]},
+        "defaultView": {"enum": ["reader", "research"]}
+      },
+      "additionalProperties": true
+    },
+    "chapters": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/chapter"},
+      "minItems": 1
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"},
+      "minItems": 1
+    },
+    "edges": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/edge"}
+    },
+    "counterpoints": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/counterpoint"}
+    },
+    "visuals": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/visual"}
+    }
+  },
+  "$defs": {
+    "idList": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "chapter": {
+      "type": "object",
+      "required": ["chapterId", "chapterType", "title", "guidingQuestion", "provisionalThesis", "claimIds", "miniConclusion", "riskOfInterpretation", "monitoringMetrics", "takeaway"],
+      "properties": {
+        "chapterId": {"type": "string", "minLength": 1},
+        "chapterType": {"enum": ["overview", "earnings-quality", "revenue-growth", "margin-cost", "cash-flow", "balance-sheet", "liquidity-leverage", "asset-quality", "funding-nim", "capital-adequacy", "segment-analysis", "valuation", "scenario-risk", "investment-conclusion"]},
+        "title": {"type": "string", "minLength": 1},
+        "guidingQuestion": {"type": "string", "minLength": 1},
+        "provisionalThesis": {"type": "string", "minLength": 1},
+        "claimIds": {"$ref": "#/$defs/idList"},
+        "centerpieceVisualId": {"type": ["string", "null"]},
+        "counterpointIds": {"$ref": "#/$defs/idList"},
+        "miniConclusion": {"type": "string", "minLength": 1},
+        "riskOfInterpretation": {"type": "string", "minLength": 1},
+        "monitoringMetrics": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "takeaway": {"type": "string", "minLength": 1},
+        "takeawayClaimIds": {"$ref": "#/$defs/idList"}
+      },
+      "additionalProperties": true
+    },
+    "claim": {
+      "type": "object",
+      "required": ["claimId", "statement", "evidenceClass", "epistemicStatus", "contentRole", "chapterIds"],
+      "properties": {
+        "claimId": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "evidenceClass": {"enum": ["FACT", "DERIVED", "INFERENCE", "SCENARIO", "RECOMMENDATION"]},
+        "epistemicStatus": {"enum": ["VERIFIED", "QUALIFIED", "DISPUTED", "AUTHOR_VIEW", "INSUFFICIENT_EVIDENCE"]},
+        "contentRole": {"enum": ["THESIS", "MECHANISM", "MILESTONE", "COUNTERPOINT", "CAVEAT", "TAKEAWAY", "EVIDENCE"]},
+        "chapterIds": {"$ref": "#/$defs/idList"},
+        "sourceIds": {"$ref": "#/$defs/idList"},
+        "formula": {"type": ["string", "null"]},
+        "inputClaimIds": {"$ref": "#/$defs/idList"},
+        "unit": {"type": ["string", "null"]},
+        "period": {"type": ["string", "null"]},
+        "uncertaintyIds": {"$ref": "#/$defs/idList"}
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": ["fromClaimId", "relation", "toClaimId", "basis"],
+      "properties": {
+        "fromClaimId": {"type": "string"},
+        "relation": {"enum": ["SUPPORTS", "CONTRADICTS", "QUALIFIES", "EXPLAINS", "DERIVED_FROM", "SYNTHESIZES", "DEPENDS_ON", "INVALIDATES_IF"]},
+        "toClaimId": {"type": "string"},
+        "basis": {"type": "string", "minLength": 1},
+        "trigger": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "counterpoint": {
+      "type": "object",
+      "required": ["counterpointId", "chapterId", "question", "mainPosition", "mainClaimIds", "opposingPosition", "opposingClaimIds", "resolvingMetrics", "synthesis", "status"],
+      "properties": {
+        "counterpointId": {"type": "string"},
+        "chapterId": {"type": "string"},
+        "question": {"type": "string", "minLength": 1},
+        "mainPosition": {"type": "string", "minLength": 1},
+        "mainClaimIds": {"$ref": "#/$defs/idList"},
+        "opposingPosition": {"type": "string", "minLength": 1},
+        "opposingClaimIds": {"$ref": "#/$defs/idList"},
+        "resolvingMetrics": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "synthesis": {"type": "string", "minLength": 1},
+        "unresolvedCondition": {"type": ["string", "null"]},
+        "status": {"enum": ["VERIFIED", "QUALIFIED", "DISPUTED", "AUTHOR_VIEW", "INSUFFICIENT_EVIDENCE"]}
+      },
+      "additionalProperties": true
+    },
+    "visual": {
+      "type": "object",
+      "required": ["visualId", "chapterId", "visualType", "layout", "dataMode", "claimIds", "sourceIds", "mobileFallback", "printFallback", "accessibilityNote", "limitations"],
+      "properties": {
+        "visualId": {"type": "string"},
+        "chapterId": {"type": "string"},
+        "visualType": {"enum": ["earnings-bridge", "cash-conversion-cascade", "balance-sheet-pressure-map", "credit-quality-cascade", "funding-to-nim", "capital-constraint-path", "market-liquidity-chain", "sticky-timeline", "mechanism-stepper", "cause-effect-network", "scenario-path", "before-after-scroller"]},
+        "layout": {"enum": ["static", "sticky-scroll", "stepper"]},
+        "dataMode": {"enum": ["verified-data", "derived-data", "scenario-data", "illustrative-mechanism"]},
+        "claimIds": {"$ref": "#/$defs/idList"},
+        "sourceIds": {"$ref": "#/$defs/idList"},
+        "stepIds": {"$ref": "#/$defs/idList"},
+        "mobileFallback": {"type": "string", "minLength": 1},
+        "printFallback": {"type": "string", "minLength": 1},
+        "accessibilityNote": {"type": "string", "minLength": 1},
+        "limitations": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
