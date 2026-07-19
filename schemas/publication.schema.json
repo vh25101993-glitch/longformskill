@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://longform.local/schemas/publication.schema.json",
+  "title": "Longform Narrative Publication",
+  "type": "object",
+  "required": ["chapters", "claimEdges", "counterpoints", "narrativeVisuals"],
+  "properties": {
+    "chapters": {"type": "array", "items": {"$ref": "#/$defs/chapter"}},
+    "claimEdges": {"type": "array", "items": {"$ref": "#/$defs/claimEdge"}},
+    "counterpoints": {"type": "array", "items": {"$ref": "#/$defs/counterpoint"}},
+    "narrativeVisuals": {"type": "array", "items": {"$ref": "#/$defs/narrativeVisual"}}
+  },
+  "$defs": {
+    "idList": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "chapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chapterId", "chapterNumber", "title", "guidingQuestion",
+        "provisionalThesis", "claimIds", "miniConclusion", "takeaway",
+        "readerSummary", "researchDisclosure", "defaultMode", "status"
+      ],
+      "properties": {
+        "chapterId": {"type": "string", "pattern": "^ch[0-9A-Za-z_-]+$"},
+        "chapterNumber": {"type": "integer", "minimum": 1},
+        "title": {"type": "string", "minLength": 1},
+        "guidingQuestion": {"type": "string", "minLength": 1},
+        "provisionalThesis": {"type": "string", "minLength": 1},
+        "sectionIds": {"$ref": "#/$defs/idList"},
+        "claimIds": {"$ref": "#/$defs/idList"},
+        "centerpieceVisualId": {"type": ["string", "null"]},
+        "counterpointId": {"type": ["string", "null"]},
+        "relatedChapterIds": {"$ref": "#/$defs/idList"},
+        "miniConclusion": {"type": "string", "minLength": 1},
+        "takeaway": {"type": "string", "minLength": 1},
+        "readerSummary": {"type": "string", "minLength": 1},
+        "researchDisclosure": {"type": "string", "minLength": 1},
+        "defaultMode": {"enum": ["reader", "research", "reader-with-research-toggle"]},
+        "status": {"enum": ["DRAFT", "AUDITED", "PUBLISHED"]}
+      }
+    },
+    "claimEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edgeId", "fromClaimId", "relation", "toClaimId", "rationale", "status"],
+      "properties": {
+        "edgeId": {"type": "string", "minLength": 1},
+        "fromClaimId": {"type": "string", "minLength": 1},
+        "relation": {
+          "enum": [
+            "SUPPORTS", "CONTRADICTS", "QUALIFIES", "DERIVED_FROM",
+            "EXPLAINS", "APPLIES_TO", "REFERENCES", "SYNTHESIZES", "SUPERSEDES"
+          ]
+        },
+        "toClaimId": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "sourceIds": {"$ref": "#/$defs/idList"},
+        "status": {"enum": ["DRAFT", "AUDITED", "REJECTED"]}
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "claimIds"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1},
+        "claimIds": {"$ref": "#/$defs/idList"}
+      }
+    },
+    "counterpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "counterpointId", "chapterId", "question", "positionA", "positionB",
+        "synthesis", "epistemicStatus", "conditionsToRevise"
+      ],
+      "properties": {
+        "counterpointId": {"type": "string", "minLength": 1},
+        "chapterId": {"type": "string", "minLength": 1},
+        "question": {"type": "string", "minLength": 1},
+        "positionA": {"$ref": "#/$defs/position"},
+        "positionB": {"$ref": "#/$defs/position"},
+        "synthesis": {"type": "string", "minLength": 1},
+        "epistemicStatus": {"enum": ["QUALIFIED", "DISPUTED"]},
+        "conditionsToRevise": {"type": "string", "minLength": 1}
+      }
+    },
+    "narrativeVisual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visualId", "chapterId", "title", "narrativeQuestion", "visualType",
+        "layout", "centerpiece", "claimIds", "sourceIds", "dataMode",
+        "readerSummary", "researchDisclosure", "fallbackTable",
+        "keyboardSupport", "reducedMotion", "printFallback", "limitations"
+      ],
+      "properties": {
+        "visualId": {"type": "string", "minLength": 1},
+        "chapterId": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "narrativeQuestion": {"type": "string", "minLength": 1},
+        "visualType": {
+          "enum": [
+            "TIMELINE", "MECHANISM_STEPPER", "POLICY_CASCADE",
+            "CAUSE_EFFECT_NETWORK", "SCENARIO_PATH", "BEFORE_AFTER", "CHART"
+          ]
+        },
+        "layout": {"enum": ["STATIC", "STICKY_SCROLL", "STEPPER", "DASHBOARD", "SCENARIO_LAB"]},
+        "centerpiece": {"type": "boolean"},
+        "stepIds": {"$ref": "#/$defs/idList"},
+        "claimIds": {"$ref": "#/$defs/idList"},
+        "sourceIds": {"$ref": "#/$defs/idList"},
+        "dataMode": {"enum": ["VERIFIED_DATA", "ILLUSTRATIVE_MECHANISM", "MIXED_WITH_DISCLOSURE"]},
+        "readerSummary": {"type": "string", "minLength": 1},
+        "researchDisclosure": {"type": "string", "minLength": 1},
+        "fallbackTable": {"type": "string", "minLength": 1},
+        "keyboardSupport": {"type": "boolean"},
+        "reducedMotion": {"type": "boolean"},
+        "printFallback": {"type": "boolean"},
+        "limitations": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

@@ -1,126 +1,136 @@
 # Longform Report — Skill
 
-Skill tạo **báo cáo tự nghiên cứu dạng article HTML dài** (15–40 chương): dark theme, Chart.js/ECharts, minimap mục lục, progress bar, chế độ trình chiếu và **Scenario & Sensitivity Lab** với input điều chỉnh trực tiếp. Tổng hợp pattern từ 5 báo cáo thực tế, tái sử dụng được cho **bất kỳ chủ đề nào** — tài chính VN, kinh tế Trung Quốc, giáo dục, xã hội...
+Skill tạo **báo cáo tự nghiên cứu dạng paper và interactive article HTML dài**: evidence-first, chapter-based, dark theme, Chart.js/ECharts, minimap, progress bar, presentation mode, **Scenario & Sensitivity Lab**, narrative centerpiece, sticky-scroll và **Reader/Research mode**.
 
-Mỗi bài đều đứng trên **hai trục song song**:
-- **Số liệu thật** — mỗi con số có nguồn, đối chiếu được (Bước 5).
-- **Học thuật thật** — mỗi lý thuyết dẫn đúng tác giả/năm/nội dung gốc (Bước 5b).
+Mỗi báo cáo đứng trên ba lớp phối hợp:
 
-> Đây là gói skill dành cho các agent (Codex / ZCode / Codex CLI...). Trong agent, skill được gọi qua `/longform-report` (alias `/longform`).
+- **Research engine** — query matrix, source hierarchy, evidence ledger, data dictionary, uncertainty register và audit bốn lớp.
+- **Knowledge engine** — chapter schema, claim graph, counterpoint object và cross-chapter relations.
+- **Publishing engine** — article/dashboard, narrative visual, sticky-scroll, Reader/Research mode, print và QA Playwright.
 
----
+> Trong agent, skill được gọi qua `/longform-report` hoặc `/longform`.
 
 ## Cấu trúc
 
-```
+```text
 longformskill/
-├── SKILL.md                          # Workflow 6 bước + style guide + pitfalls
+├── SKILL.md
 ├── assets/
-│   └── article_template.html         # Template CORE self-contained ({{TOKEN}} placeholder)
+│   ├── article_template.html
+│   └── narrative_components.html
+├── schemas/
+│   └── publication.schema.json
 ├── references/
-│   ├── components.md                 # Catalog component (CORE + nâng cao) + checklist
-│   ├── chart_recipes.md              # Recipe Chart.js 4.4.1 (bar/line/radar/mixed) cho dark theme
-│   ├── interactive_sensitivity.md    # Slider/preset + KPI + chart độ nhạy cập nhật trực tiếp
-│   ├── themes.md                     # Family Amber/Blue + bảng hero gradient mood
-│   ├── navigation.md                 # Minimap + progress + presentation + đồng bộ section
-│   ├── citations.md                  # 2 chế độ trích nguồn (numerated vs plain)
-│   ├── fact_check.md                 # ⭐ Hậu kiểm số liệu (trục "số liệu thật")
-│   └── academic_foundations.md       # ⭐ Nền tảng học thuật + fact-check lý thuyết (trục "học thuật thật")
+│   ├── components.md
+│   ├── chart_recipes.md
+│   ├── interactive_sensitivity.md
+│   ├── narrative_publication.md
+│   ├── themes.md
+│   ├── navigation.md
+│   ├── citations.md
+│   ├── fact_check.md
+│   ├── academic_foundations.md
+│   ├── desk_research_01_protocol.md
+│   ├── desk_research_02_data.md
+│   ├── desk_research_03_analysis.md
+│   └── desk_research_04_audit_templates.md
 ├── scripts/
-│   └── qa_article.js                 # Playwright QA (8 check: token/structure/sections/chart/nav/errors/screenshots)
+│   ├── init_research_project.py
+│   ├── qa_research_project.py
+│   └── qa_article.js
 └── agents/
-    └── openai.yaml                   # UI metadata (display_name, short_description, default_prompt)
+    └── openai.yaml
 ```
 
----
+## Workflow 6 bước
+
+| Bước | Nội dung |
+|---|---|
+| 1 | Research specification, outline, theme và chapter map |
+| 2 | Source plan, query matrix và evidence acquisition |
+| 3 | Data normalization, data quality và uncertainty register |
+| 4 | Analysis, chapter composition, claim graph, counterpoint và narrative centerpiece |
+| 5 | Audit fact/data, academic/mechanism, provenance/graph và editorial/narrative |
+| 6 | Output engineering, Reader/Research mode, sticky-scroll và technical QA |
+
+Workflow cũ không bị thay thế. Các lớp publication mới được tạo **sau evidence acquisition và normalization**, dùng cùng dataset đã audit.
+
+## Research package
+
+```text
+research-project/
+├── research_brief.md
+├── research_plan.csv
+├── source_register.csv
+├── evidence_ledger.csv
+├── data_dictionary.csv
+├── chart_manifest.csv
+├── claim_audit.csv
+├── uncertainty_register.csv
+├── chapter_schema.csv
+├── claim_graph.csv
+├── counterpoints.csv
+├── narrative_manifest.csv
+├── recommendation_matrix.csv
+├── paper.md hoặc index.html
+└── qa_report.md
+```
+
+## Khởi tạo và kiểm tra
+
+```bash
+python "$SKILL_DIR/scripts/init_research_project.py" \
+  --topic "Chính sách BĐS Trung Quốc trước và sau 2016" \
+  --profile policy-before-after \
+  --out ./research-project
+
+python "$SKILL_DIR/scripts/qa_research_project.py" ./research-project
+```
+
+Validator kiểm tra thêm:
+
+- chapter ID và claim ID không trùng;
+- claim graph không trỏ đến node không tồn tại;
+- relation type hợp lệ;
+- counterpoint có đủ hai phía và evidence mapping;
+- narrative visual tham chiếu chapter, claim và source hợp lệ;
+- `illustrative-mechanism` có disclosure;
+- sticky-scroll có đủ step, mobile fallback và accessibility note.
+
+## Reader/Research mode
+
+- **Reader mode:** ưu tiên câu hỏi dẫn, narrative, visual, takeaway và caveat trọng yếu.
+- **Research mode:** hiện claim ID, evidence class, epistemic status, source, formula, uncertainty và graph relations.
+
+Hai mode dùng cùng DOM/data để tránh lệch số liệu.
+
+## Narrative centerpiece
+
+Một chương chỉ nên có tối đa một centerpiece chính. Các pattern ưu tiên:
+
+- sticky timeline;
+- mechanism stepper;
+- policy cascade;
+- cause-effect network;
+- scenario path;
+- before/after scroller.
+
+Dùng `assets/narrative_components.html` làm drop-in component và xem quy tắc chi tiết tại `references/narrative_publication.md`.
+
+## Hai trục chất lượng giữ nguyên
+
+| Trục | Đối tượng |
+|---|---|
+| **Số liệu thật** | số, ngày, tỷ lệ, chỉ số, mốc luật/chính sách |
+| **Học thuật thật** | lý thuyết, cơ chế, tác giả, tác phẩm và bằng chứng nhân quả |
+
+Các lớp mới bổ sung **graph integrity** và **narrative integrity**, không làm giảm yêu cầu fact-check hiện có.
 
 ## Cài đặt
 
-Skill là một thư mục chứa `SKILL.md` + các tài nguyên đi kèm. Đặt vào thư mục skills mà agent quét:
-
-### ZCode
 ```bash
-git clone git@github.com:Thanhtran-165/longformskill.git \
-  ~/.zcode/skills/longform-report
-```
-
-### Codex / Codex CLI
-```bash
-git clone git@github.com:Thanhtran-165/longformskill.git \
+git clone https://github.com/vh25101993-glitch/longformskill.git \
   "${CODEX_HOME:-$HOME/.codex}/skills/longform-report"
 ```
 
-> ⚠️ **Tên thư mục phải là `longform-report`** để các lệnh copy template / chạy QA dùng `$SKILL_DIR` hoạt động đúng (xem phần *Đường dẫn* bên dưới).
-
-Không cần build, không cần dependency ngoài — trừ khi chạy QA script:
-
-```bash
-npm install playwright --prefix /tmp/qa-runner
-npx playwright install chromium
-```
-
----
-
-## Đường dẫn & portability
-
-`SKILL.md` dùng biến `$SKILL_DIR` (thư mục chứa skill) cho mọi lệnh tham chiếu file nội bộ:
-
-```bash
-cp "$SKILL_DIR/assets/article_template.html" {project}/{slug}/index.html
-node "$SKILL_DIR/scripts/qa_article.js" --url=file://{project}/{slug}/index.html --output=/tmp/qa-shots
-```
-
-- **ZCode**: `$SKILL_DIR` = `~/.zcode/skills/longform-report`
-- **Codex**: `$SKILL_DIR` = `${CODEX_HOME:-~/.codex}/skills/longform-report`
-- Nếu skill nằm chỗ khác → đặt `SKILL_DIR` bằng đường dẫn thực tế trên máy.
-
----
-
-## Cách dùng (trong agent)
-
-```
-/longform-report "BĐS dòng tiền VN" 15 chương
-```
-
-Workflow 6 bước (agent tự chạy theo `SKILL.md`):
-
-| Bước | Việc | Bắt buộc |
-|---|---|---|
-| 1 | Chốt outline + theme (family Amber/Blue, hero mood) | ✅ |
-| 2 | Copy template + fill hero/meta tokens | ✅ |
-| 3 | Viết các section; thêm Scenario & Sensitivity Lab khi kết quả phụ thuộc giả định có mô hình | ✅ theo điều kiện |
-| 4 | Tài liệu tham khảo + đồng bộ minimap (3 chỗ khớp nhau) | ✅ |
-| **5** | **Fact-check số liệu** — trích claim định lượng → grep mâu thuẫn nội bộ → đối chiếu nguồn ngoài | ✅ (bài có ≥10 con số) |
-| **5b** | **Fact-check lý thuyết học thuật** — tên/tác giả/năm/nội dung, chạy song song Bước 5 | ✅ (bài phân tích hành vi, ≥3 lý thuyết) |
-| 6 | Verify kỹ thuật (JS parse, canvas count, Playwright QA) | ✅ |
-
-**Tone cốt lõi:** *"Người kể chuyện số liệu, KHÔNG cho ý kiến"* — mô tả quan sát và tỷ lệ, không khuyên mua/bán.
-
----
-
-## Hai trục chất lượng
-
-| Trục | File | Đối tượng | Khi nào bắt buộc |
-|---|---|---|---|
-| **Số liệu thật** | `references/fact_check.md` | con số, ngày, tỷ lệ, Điều luật, chỉ số BCTC | Bài có ≥10 con số / bài pháp luật / bài kêu gọi đối chiếu báo cáo CK |
-| **Học thuật thật** | `references/academic_foundations.md` | tên lý thuyết, tác giả, năm tác phẩm, số liệu minh họa | Bài phân tích hành vi người / bài cơ chế nhân quả / ≥3 lý thuyết |
-| **Mô hình minh bạch** | `references/interactive_sensitivity.md` | baseline, input range, formula, output và độ nhạy | Bài HTML có kịch bản định lượng hoặc định giá |
-
-Catalog lý thuyết đã verify sẵn trong `academic_foundations.md` (Kahneman, Cialdini, Shefrin & Statman, Dunning-Kruger, Festinger...) — kèm link nguồn gốc để copy đúng tên + tác giả + năm.
-
----
-
-## Phối hợp hệ sinh thái skill (optional)
-
-| Skill | Vai trò | Relation |
-|---|---|---|
-| `vn-macro-monthly` | Số liệu vĩ mô VN hàng tháng | Enrich context cho bài tài chính VN |
-| `vn-news-digest` | Thời sự 30 ngày | Enrich số liệu sự kiện gần |
-| `vn-research-dashboard` | Equity dashboard 1 cổ phiếu | KHÁC — dashboard = 1 cổ phiếu ngắn, longform = nhiều chương tư duy |
-| `imagegen` | Tạo cover image | Optional — hero image cho bài quan trọng |
-
----
-
-## License
-
-Cung cấp nguyên mục đích chia sẻ / tái sử dụng. Bạn tự chịu trách nhiệm về tính chính xác của số liệu và lý thuyết trong các bài báo cáo mình tạo ra (skill có sẵn quy trình fact-check ở Bước 5 & 5b — hãy chạy nó).
+Tên thư mục nên là `longform-report` để biến `$SKILL_DIR` và các lệnh nội bộ hoạt động nhất quán.

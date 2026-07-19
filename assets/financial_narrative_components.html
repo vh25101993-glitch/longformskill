@@ -1,0 +1,145 @@
+<!-- Financial HTML Narrative Components
+Paste CSS into <style>, HTML where needed, and JS before </body>.
+Uses the same DOM for Reader/Research mode.
+-->
+<style>
+:root{--fin-accent:#38bdf8;--fin-good:#22c55e;--fin-warn:#f59e0b;--fin-bad:#ef4444;--fin-card:#111827;--fin-line:#334155;--fin-muted:#94a3b8}
+.fin-view-toggle{position:sticky;top:12px;z-index:40;display:flex;justify-content:flex-end;gap:8px;margin:12px 0}
+.fin-view-toggle button{border:1px solid var(--fin-line);background:#0f172a;color:#cbd5e1;border-radius:999px;padding:8px 13px;cursor:pointer}
+.fin-view-toggle button[aria-pressed="true"]{border-color:var(--fin-accent);color:#fff;box-shadow:0 0 0 2px rgba(56,189,248,.14)}
+.fin-chapter-head{border:1px solid var(--fin-line);border-radius:16px;padding:20px;margin:0 0 22px;background:linear-gradient(135deg,rgba(56,189,248,.09),rgba(15,23,42,.92))}
+.fin-chapter-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.11em;color:var(--fin-accent);font-weight:800}
+.fin-guiding-question{font-size:1.18rem;color:#fff;margin:7px 0 8px;font-weight:750;line-height:1.45}
+.fin-thesis{color:#cbd5e1;margin:0}
+.fin-takeaway{border-left:4px solid var(--fin-accent);background:rgba(56,189,248,.07);padding:15px 18px;margin:22px 0;border-radius:0 12px 12px 0}
+.fin-takeaway strong{display:block;color:#fff;margin-bottom:4px}
+.fin-counterpoint{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.fin-position{border:1px solid var(--fin-line);border-radius:14px;padding:17px;background:rgba(15,23,42,.7)}
+.fin-position.main{border-top:3px solid var(--fin-good)}
+.fin-position.oppose{border-top:3px solid var(--fin-warn)}
+.fin-position h4{margin:0 0 8px;color:#fff}
+.fin-resolver{grid-column:1/-1;border:1px dashed var(--fin-line);border-radius:12px;padding:13px 16px;color:#cbd5e1}
+.fin-resolver b{color:var(--fin-accent)}
+.fin-disclosure{border:1px solid var(--fin-line);border-radius:12px;margin:14px 0;background:rgba(15,23,42,.58)}
+.fin-disclosure summary{cursor:pointer;padding:12px 15px;color:#e2e8f0;font-weight:700}
+.fin-disclosure .fin-disclosure-body{padding:0 15px 15px;color:#cbd5e1}
+.fin-claim-meta{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.fin-chip{font-size:.72rem;border:1px solid var(--fin-line);border-radius:999px;padding:4px 8px;color:#cbd5e1;background:#0f172a}
+.fin-chip.fact{border-color:rgba(34,197,94,.5);color:#86efac}.fin-chip.derived{border-color:rgba(56,189,248,.5);color:#7dd3fc}.fin-chip.inference{border-color:rgba(245,158,11,.5);color:#fcd34d}.fin-chip.scenario{border-color:rgba(139,92,246,.5);color:#c4b5fd}
+.fin-graph{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.fin-node{border:1px solid var(--fin-line);border-radius:10px;padding:8px 10px;background:#0f172a;color:#e2e8f0;font-size:.82rem}
+.fin-edge{color:var(--fin-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.fin-centerpiece{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(320px,1.1fr);gap:22px;margin:26px 0;align-items:start}
+.fin-steps{display:grid;gap:12px}
+.fin-step{border:1px solid var(--fin-line);border-radius:12px;padding:15px;background:rgba(15,23,42,.68);cursor:pointer;transition:.2s}
+.fin-step.active{border-color:var(--fin-accent);box-shadow:0 0 0 2px rgba(56,189,248,.12)}
+.fin-step .num{font-size:.68rem;color:var(--fin-accent);font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.fin-step h4{margin:4px 0 5px;color:#fff}.fin-step p{margin:0;color:#cbd5e1;font-size:.9rem}
+.fin-visual{position:sticky;top:88px;border:1px solid var(--fin-line);border-radius:16px;padding:18px;background:linear-gradient(180deg,#111827,#0f172a);min-height:300px}
+.fin-bridge{display:grid;gap:10px}
+.fin-bridge-row{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;padding:10px;border-bottom:1px dashed var(--fin-line)}
+.fin-bridge-row:last-child{border-bottom:none}.fin-bridge-row .label{color:#cbd5e1}.fin-bridge-row .bar{height:8px;background:linear-gradient(90deg,var(--fin-accent),rgba(56,189,248,.2));border-radius:999px}.fin-bridge-row .value{color:#fff;font-weight:800}
+.fin-research-only{display:none}
+html[data-view="research"] .fin-research-only{display:block}
+html[data-view="research"] .fin-research-inline{display:inline-flex}
+html[data-view="reader"] .fin-reader-hide{display:none!important}
+@media(max-width:820px){.fin-counterpoint,.fin-centerpiece{grid-template-columns:1fr}.fin-visual{position:static;min-height:auto}.fin-bridge-row{grid-template-columns:110px 1fr auto}.fin-view-toggle{position:static}}
+@media(prefers-reduced-motion:reduce){.fin-step{transition:none}}
+@media print{.fin-view-toggle{display:none!important}.fin-research-only{display:block!important}.fin-reader-hide{display:block!important}.fin-centerpiece{grid-template-columns:1fr}.fin-visual{position:static}.fin-disclosure[open] .fin-disclosure-body,.fin-disclosure .fin-disclosure-body{display:block!important}.fin-disclosure summary{list-style:none}}
+</style>
+
+<!-- View toggle -->
+<div class="fin-view-toggle" role="group" aria-label="Chế độ đọc">
+  <button type="button" data-fin-view="reader" aria-pressed="true">Reader</button>
+  <button type="button" data-fin-view="research" aria-pressed="false">Research</button>
+</div>
+
+<!-- Chapter header -->
+<header class="fin-chapter-head" data-chapter-id="ch-cash-flow">
+  <div class="fin-chapter-kicker">Cash flow · CH-04</div>
+  <div class="fin-guiding-question">Lợi nhuận kế toán có chuyển hóa thành tiền hay không?</div>
+  <p class="fin-thesis">CFO yếu hơn LNST cho thấy chất lượng lợi nhuận cần được kiểm tra qua vốn lưu động.</p>
+  <div class="fin-claim-meta fin-research-only">
+    <span class="fin-chip fact">CLM-CFO-01 · FACT</span>
+    <span class="fin-chip derived">CLM-FCF-02 · DERIVED</span>
+    <span class="fin-chip inference">QUALIFIED</span>
+  </div>
+</header>
+
+<!-- Claim graph -->
+<div class="fin-graph fin-research-only" aria-label="Quan hệ luận điểm">
+  <span class="fin-node">LNST tăng</span><span class="fin-edge">QUALIFIED BY</span><span class="fin-node">CFO/LNST giảm</span><span class="fin-edge">EXPLAINS</span><span class="fin-node">Chất lượng lợi nhuận yếu</span>
+</div>
+
+<!-- Counterpoint -->
+<section class="fin-counterpoint" data-counterpoint-id="CP-CFO-01">
+  <article class="fin-position main"><h4>Luận điểm chính</h4><p>CFO thấp phản ánh vốn lưu động hấp thụ tiền mặt và làm giảm chất lượng lợi nhuận.</p></article>
+  <article class="fin-position oppose"><h4>Phản biện mạnh nhất</h4><p>Biến động vốn lưu động có thể mang tính mùa vụ hoặc phục vụ tăng trưởng doanh thu kỳ sau.</p></article>
+  <div class="fin-resolver"><b>Chỉ tiêu phân định:</b> vòng quay phải thu, tồn kho, ageing, CFO/LNST và diễn biến hai quý tiếp theo.</div>
+</section>
+
+<!-- Progressive disclosure -->
+<details class="fin-disclosure">
+  <summary>Phương pháp, nguồn và giới hạn</summary>
+  <div class="fin-disclosure-body">
+    <p><b>Formula:</b> FCF = CFO − capex.</p>
+    <p><b>Sources:</b> BCTC hợp nhất, thuyết minh dòng tiền và vốn lưu động.</p>
+    <p><b>Limitation:</b> CFO theo quý có thể biến động mạnh do thời điểm thanh toán.</p>
+    <div class="fin-research-only"><b>Graph:</b> CLM-FCF-02 DERIVED_FROM CLM-CFO-01, CLM-CAPEX-03.</div>
+  </div>
+</details>
+
+<!-- Narrative centerpiece -->
+<section class="fin-centerpiece" data-visual-id="VIS-CASH-CONVERSION-01">
+  <div class="fin-steps">
+    <article class="fin-step active" tabindex="0" data-fin-step="0"><div class="num">Bước 1</div><h4>LNST</h4><p>Điểm xuất phát là lợi nhuận kế toán.</p></article>
+    <article class="fin-step" tabindex="0" data-fin-step="1"><div class="num">Bước 2</div><h4>Điều chỉnh phi tiền mặt</h4><p>Khấu hao, dự phòng và lãi/lỗ chưa thực hiện.</p></article>
+    <article class="fin-step" tabindex="0" data-fin-step="2"><div class="num">Bước 3</div><h4>Vốn lưu động</h4><p>Phải thu và tồn kho hấp thụ tiền mặt.</p></article>
+    <article class="fin-step" tabindex="0" data-fin-step="3"><div class="num">Bước 4</div><h4>CFO và FCF</h4><p>Dòng tiền còn lại sau capex quyết định khả năng tự tài trợ.</p></article>
+  </div>
+  <div class="fin-visual" aria-live="polite">
+    <h4 id="finVisualTitle">Cash conversion</h4>
+    <div class="fin-bridge" id="finBridge">
+      <div class="fin-bridge-row"><span class="label">LNST</span><span class="bar" style="width:100%"></span><span class="value">100</span></div>
+      <div class="fin-bridge-row"><span class="label">Phi tiền mặt</span><span class="bar" style="width:88%"></span><span class="value">+12</span></div>
+      <div class="fin-bridge-row"><span class="label">Vốn lưu động</span><span class="bar" style="width:52%"></span><span class="value">−48</span></div>
+      <div class="fin-bridge-row"><span class="label">CFO</span><span class="bar" style="width:64%"></span><span class="value">64</span></div>
+      <div class="fin-bridge-row"><span class="label">FCF</span><span class="bar" style="width:39%"></span><span class="value">39</span></div>
+    </div>
+    <p class="fin-research-only">Illustrative values only. Replace with audited claim data and label data mode in narrative_manifest.csv.</p>
+  </div>
+</section>
+
+<div class="fin-takeaway"><strong>Takeaway</strong>CFO/LNST và biến động vốn lưu động phải được đọc cùng nhau; một quý yếu chưa đủ kết luận nếu chưa kiểm tra tính mùa vụ.</div>
+
+<script>
+(function(){
+  const root=document.documentElement;
+  const buttons=[...document.querySelectorAll('[data-fin-view]')];
+  const saved=localStorage.getItem('financialView');
+  const initial=saved==='research'?'research':'reader';
+  function setView(view){
+    root.dataset.view=view;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.finView===view)));
+    localStorage.setItem('financialView',view);
+    window.dispatchEvent(new Event('resize'));
+  }
+  buttons.forEach(b=>b.addEventListener('click',()=>setView(b.dataset.finView)));
+  setView(initial);
+
+  const steps=[...document.querySelectorAll('[data-fin-step]')];
+  const activate=i=>steps.forEach((s,n)=>s.classList.toggle('active',n===i));
+  steps.forEach((s,i)=>{
+    s.addEventListener('click',()=>activate(i));
+    s.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();activate(i)}
+      if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();activate(Math.min(i+1,steps.length-1));steps[Math.min(i+1,steps.length-1)].focus()}
+      if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();activate(Math.max(i-1,0));steps[Math.max(i-1,0)].focus()}
+    });
+  });
+  if('IntersectionObserver' in window && matchMedia('(min-width:821px)').matches){
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)activate(Number(e.target.dataset.finStep))}),{rootMargin:'-35% 0px -50% 0px',threshold:.1});
+    steps.forEach(s=>io.observe(s));
+  }
+})();
+</script>
