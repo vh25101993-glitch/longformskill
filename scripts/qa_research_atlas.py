@@ -67,17 +67,30 @@ VALID_DATA_TYPES = {
 }
 
 REFERENCE_FIELDS = {
+    "moduleId": "modules",
     "moduleIds": "modules",
+    "chapterId": "chapters",
     "chapterIds": "chapters",
+    "readingPath": "chapters",
+    "claimId": "claims",
     "claimIds": "claims",
+    "sourceId": "sources",
     "sourceIds": "sources",
+    "questionId": "questions",
     "questionIds": "questions",
+    "misconceptionId": "misconceptions",
     "misconceptionIds": "misconceptions",
+    "pathwayId": "pathways",
     "pathwayIds": "pathways",
+    "thesisId": "theses",
     "thesisIds": "theses",
+    "caseId": "cases",
     "caseIds": "cases",
+    "conceptId": "glossary",
     "conceptIds": "glossary",
+    "termId": "glossary",
     "termIds": "glossary",
+    "ruleId": "interaction_rules",
     "ruleIds": "interaction_rules",
 }
 
