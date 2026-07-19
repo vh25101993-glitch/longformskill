@@ -6,37 +6,30 @@ aliases:
   - desk-research-finance
   - paper-research
   - longform-desk-research
-description: Nghiên cứu bàn đa nguồn evidence-first và xuất bản báo cáo kinh tế - tài chính dạng paper/HTML dài. Dùng cho so sánh quốc tế, chính sách trước-sau, lịch sử tài sản/premium-spread, tổng hợp nhiều tài liệu, hoặc báo cáo HTML/PDF/DOCX có nguồn, biểu đồ và QA.
+description: Nghiên cứu bàn đa nguồn evidence-first và xuất bản báo cáo kinh tế - tài chính dạng paper/HTML dài, có evidence audit, chapter schema, claim graph, counterpoint, narrative centerpiece, sticky-scroll, Reader/Research mode và QA.
 ---
 
 # Longform Financial-Economic Desk Research
 
-Phiên bản này hợp nhất:
+Skill hợp nhất ba lớp:
 
 - **Research engine:** query matrix, source hierarchy, evidence ledger, data dictionary, comparability, uncertainty register và claim-level audit.
-- **Publishing engine:** dark Longform HTML, KPI cards, Chart.js/ECharts, minimap, timeline, glossary, **Scenario & Sensitivity Lab**, print mode và QA Playwright.
+- **Knowledge engine:** chapter schema, claim graph, counterpoint object, cross-chapter relations và epistemic status.
+- **Publishing engine:** dark Longform HTML, KPI/chart/table, minimap, narrative centerpiece, sticky-scroll, Reader/Research mode, Scenario & Sensitivity Lab, print và QA Playwright.
 
-Mục tiêu: báo cáo vừa **paper-ready** về kết cấu, vừa **audit-ready** về bằng chứng.
+Mục tiêu: báo cáo vừa **paper-ready**, **audit-ready** và **publication-ready**.
 
 ## Khi nào kích hoạt
 
-Dùng workflow đầy đủ cho:
-
-- desk/deep research, paper nghiên cứu, data analysis report;
-- báo cáo kinh tế - tài chính dài nhiều chương;
-- so sánh quốc gia/giai đoạn/chỉ tiêu;
-- chính sách trước/sau mốc, timeline và cơ chế truyền dẫn;
-- lịch sử tài sản, CAGR/YoY, premium/spread, regime;
-- tổng hợp nhiều báo cáo, đồng thuận/bất đồng, forecast comparison;
-- HTML/PDF/DOCX chuyên sâu cần nguồn và QA.
+Dùng workflow đầy đủ cho desk/deep research, báo cáo kinh tế-tài chính nhiều chương, chính sách trước-sau, lịch sử tài sản, so sánh quốc tế, tổng hợp nhiều tài liệu, report HTML/PDF/DOCX có nguồn, hoặc interactive digital publication.
 
 Câu hỏi ngắn dùng mode `compact`, nhưng vẫn giữ quy tắc không bịa dữ liệu.
 
 ## Output modes
 
-- `research-package`: brief + source register + evidence ledger + data dictionary + claim audit.
+- `research-package`: brief + source/evidence/data/audit + publication manifests.
 - `paper`: Markdown/DOCX/PDF.
-- `html`: Longform dark article/dashboard.
+- `html`: Longform article/dashboard có Reader/Research mode.
 - `paper+html`: hai đầu ra dùng cùng dataset đã audit.
 - `compact`: phân tích ngắn có nguồn và caveat.
 
@@ -49,24 +42,29 @@ Câu hỏi ngắn dùng mode `compact`, nhưng vẫn giữ quy tắc không bị
 5. Không gán tỷ trọng đóng góp nếu không có mô hình.
 6. Claim trọng yếu phải có provenance cụ thể.
 7. Dữ liệu hiện tại phải được kiểm tra lại, không dùng trí nhớ.
-8. Chart và text dùng cùng dataset đã audit.
+8. Text, table, chart và narrative visual dùng cùng dataset đã audit.
 9. Kết luận/khuyến nghị không mạnh hơn bằng chứng.
 10. Bản cuối không chứa placeholder, prompt hoặc hướng dẫn nội bộ.
 
-## Năm lớp phát biểu
+## Taxonomy claim hai chiều
 
-| Lớp | Nhãn | Quy tắc |
-|---|---|---|
-| Dữ kiện nguồn | `FACT` | Có nguồn, kỳ, đơn vị |
-| Số tính toán | `DERIVED` | Có công thức và đầu vào |
-| Diễn giải | `INFERENCE` | Có luận cứ và mức chắc chắn |
-| Kịch bản | `SCENARIO` | Có giả định, trigger, horizon |
-| Khuyến nghị | `RECOMMENDATION` | Có target, evidence, risk, KPI |
+### Evidence class
 
-## Hai trục chất lượng
+| Nhãn | Quy tắc |
+|---|---|
+| `FACT` | Có nguồn, kỳ, đơn vị |
+| `DERIVED` | Có công thức và input claim IDs |
+| `INFERENCE` | Có luận cứ và mức chắc chắn |
+| `SCENARIO` | Có giả định, trigger, horizon |
+| `RECOMMENDATION` | Có target, evidence, risk, KPI |
 
-- **Số liệu thật:** mọi số, ngày, tỷ lệ, chỉ số được fact-check.
-- **Học thuật thật:** mọi lý thuyết/cơ chế có tác giả, tác phẩm hoặc nguồn gốc đúng.
+### Epistemic status
+
+`VERIFIED`, `QUALIFIED`, `DISPUTED`, `AUTHOR_VIEW`, `INSUFFICIENT_EVIDENCE`.
+
+### Content role
+
+`THESIS`, `MECHANISM`, `MILESTONE`, `COUNTERPOINT`, `CAVEAT`, `TAKEAWAY`, `EVIDENCE`.
 
 # Workflow 6 bước
 
@@ -79,186 +77,160 @@ Tạo `research_brief.md`, chốt:
 - unit of analysis, tần suất, biến và công thức;
 - breakpoint và cơ sở chọn;
 - audience, output mode, completion criteria;
-- family theme/hero mood nếu xuất HTML.
+- family theme/hero mood nếu xuất HTML;
+- **chapter map sơ bộ:** guiding question, thesis, centerpiece dự kiến và related chapters.
 
-Chọn profile:
-
-- `asset-history`
-- `policy-before-after`
-- `cross-country-development`
-- `industry-market`
-- `document-consensus`
-- `custom`
-
-Xem `references/desk_research_01_protocol.md`.
+Chọn profile: `asset-history`, `policy-before-after`, `cross-country-development`, `industry-market`, `document-consensus`, `custom`.
 
 ## Bước 2 — Source plan và evidence acquisition
 
 Mỗi câu hỏi phụ có query matrix: mục tiêu, từ khóa, nguồn ưu tiên, dữ liệu cần trích, stopping rule và gap.
 
-Thứ tự nguồn:
+Ưu tiên nguồn: cơ quan chính thức → tổ chức quốc tế → regulator/exchange/company filing → paper gốc → tổ chức nghiên cứu có phương pháp → Reuters/FT/Bloomberg → nguồn tổng hợp để định hướng.
 
-1. văn bản/cơ quan thống kê/ngân hàng trung ương/bộ ngành;
-2. World Bank, IMF, OECD, BIS, UN, Eurostat;
-3. cơ quan quản lý, sở giao dịch, báo cáo doanh nghiệp;
-4. paper/working paper/journal gốc;
-5. tổ chức nghiên cứu có phương pháp rõ;
-6. Reuters/FT/Bloomberg và báo chí uy tín;
-7. nguồn tổng hợp chỉ để định hướng.
-
-Ghi claim vào `evidence_ledger.csv` ngay khi thu thập. Claim trọng yếu nên cross-check hai nguồn độc lập khi khả thi.
-
-Xem `references/desk_research_01_protocol.md` và `desk_research_02_data.md`.
+Ghi claim vào `evidence_ledger.csv` ngay khi thu thập. Claim trọng yếu nên cross-check hai nguồn độc lập khi khả thi. Không tạo chapter narrative trước khi có evidence inventory tối thiểu.
 
 ## Bước 3 — Data normalization và Data Quality
 
-Bắt buộc có:
+Bắt buộc giữ:
 
 - `source_register.csv`
+- `evidence_ledger.csv`
 - `data_dictionary.csv`
+- `chart_manifest.csv`
 - `uncertainty_register.csv`
 
-Kiểm tra: actual/derived/interpolated/estimated/forecast; current/constant price; FX/PPP; missing/duplicate/outlier/revision; break in series; comparability giữa quốc gia/giai đoạn.
+Kiểm tra actual/derived/interpolated/estimated/forecast; current/constant price; FX/PPP; missing/duplicate/outlier/revision; break in series; comparability giữa quốc gia/giai đoạn. Không nội suy chỉ để làm chart đẹp.
 
-Báo cáo phải công bố độ phủ, tỷ lệ missing/nội suy, độ trễ, khác biệt định nghĩa và claim không đủ điều kiện kết luận.
+Bổ sung vào evidence ledger: `epistemic_status`, `content_role`, `chapter_ids`, `visual_ids`, `counterpoint_ids`.
 
-Không nội suy chỉ để làm chart đẹp.
+## Bước 4 — Analysis, chapter composition và publication design
 
-Xem `references/desk_research_02_data.md`.
-
-## Bước 4 — Analysis, paper composition và HTML
-
-Logic bắt buộc:
+Logic bắt buộc toàn bài:
 
 > Bối cảnh → dữ liệu → so sánh → cơ chế → phản chứng → hàm ý → hành động.
 
-Cấu trúc mặc định:
+Mỗi chương phải có:
 
-1. Cover/meta
-2. Executive Summary
-3. Scope & Definitions
-4. Methodology & Data Quality
-5. Historical/Institutional Context
-6. Core Performance
-7. Comparisons
-8. Attribution & Diagnosis
-9. Alternative Explanations
-10. Findings
-11. Recommendations & Action Plan
-12. Uncertainty & Limitations
-13. Sources
-14. Appendix/Data Dictionary
+1. `chapter_id`, title và guiding question;
+2. provisional thesis;
+3. evidence claim IDs;
+4. mechanism hoặc comparison;
+5. strongest counterpoint;
+6. mini-conclusion và risk of interpretation;
+7. takeaway;
+8. related chapters;
+9. tối đa một narrative centerpiece chính.
 
-Quy tắc:
+Tạo các publication manifests:
 
-- Executive Summary có 3-7 phát hiện định lượng và 2-5 caveat.
-- Mỗi chương có câu hỏi dẫn, evidence, interpretation, mini-conclusion và risk of interpretation.
-- Timeline dùng ngày/mốc chính xác.
-- Glossary bắt buộc khi có thuật ngữ dễ nhầm.
-- So sánh quốc tế phải có comparability matrix.
-- Asset history tách price return, FX effect, premium/spread, transaction cost và real return khi có dữ liệu.
-- Policy analysis dùng chain: policy → channel → intermediate indicator → outcome → side effect.
-- Khi tồn tại quan hệ định lượng có thể bảo vệ được, HTML phải có **Scenario & Sensitivity Lab** để người đọc điều chỉnh giả định và quan sát kết quả. Biến `FACT` chỉ làm baseline; biến người dùng thay đổi phải gắn nhãn `SCENARIO`.
-- Không tạo mô hình tương tác chỉ để làm báo cáo sinh động. Nếu không có công thức, hệ số hoặc logic truyền dẫn đủ cơ sở, dùng kịch bản rời rạc Bear/Base/Bull và công bố giới hạn thay vì tạo đường cong giả.
+- `chapter_schema.csv`
+- `claim_graph.csv`
+- `counterpoints.csv`
+- `narrative_manifest.csv`
 
-Tone: **người kể chuyện số liệu, không áp đặt kết luận**.
+### Claim graph
 
-Xem `references/desk_research_03_analysis.md`.
+Quan hệ cho phép: `SUPPORTS`, `CONTRADICTS`, `QUALIFIES`, `DERIVED_FROM`, `EXPLAINS`, `APPLIES_TO`, `REFERENCES`, `SYNTHESIZES`, `SUPERSEDES`.
+
+Mỗi edge phải có source/evidence basis hoặc ghi rõ là quan hệ biên tập.
+
+### Counterpoint object
+
+Mỗi counterpoint gồm: question, position A, position B, claim IDs hai phía, strongest evidence, synthesis, unresolved condition và status. Không dùng “ý kiến trái chiều” chung chung không có evidence mapping.
+
+### Narrative centerpiece
+
+Chỉ dùng khi visual giải quyết một câu hỏi kể chuyện rõ ràng. Các loại ưu tiên: `sticky-timeline`, `mechanism-stepper`, `policy-cascade`, `cause-effect-network`, `scenario-path`, `before-after-scroller`.
+
+Mỗi centerpiece phải có trong `narrative_manifest.csv`: chapter ID, visual type, claim IDs, source IDs, data mode, steps, trigger, fallback, accessibility note và limitation.
+
+- `verified-data`: dữ liệu có provenance.
+- `illustrative-mechanism`: minh họa cơ chế, không được trình bày như số liệu thực.
+
+### Scenario & Sensitivity Lab
+
+Khi có quan hệ định lượng bảo vệ được, cho phép người đọc điều chỉnh giả định. Baseline dùng `FACT`/`DERIVED`; giá trị từ control dùng `SCENARIO` hoặc `DERIVED-SCENARIO`. Nếu không có công thức đủ cơ sở, dùng Bear/Base/Bull rời rạc và công bố giới hạn.
 
 ## Bước 5 — Audit bốn lớp
 
 ### 5A. Fact/data
 
-Trích mọi claim có số; đối chiếu text-table-chart; kiểm tra source, unit, period, frequency, nominal/real, mean/median và mốc luật/chính sách.
+Đối chiếu text-table-chart-narrative visual; kiểm tra source, unit, period, frequency, nominal/real và mốc chính sách.
 
 ### 5B. Academic/mechanism
 
-Mỗi lý thuyết có nguồn gốc; không bịa framework; causal mechanism phải có supporting evidence và alternative explanations.
+Mỗi lý thuyết/cơ chế có nguồn gốc; causal mechanism phải có supporting evidence và alternative explanations.
 
-### 5C. Citation/provenance
+### 5C. Citation/provenance và graph integrity
 
-Claim trọng yếu có claim ID; chart/table có source note; derived metric có formula/input; citation phải hỗ trợ đúng entity, metric và period.
+- Claim trọng yếu có claim ID.
+- Chart/table/visual có source note.
+- Derived metric có formula/input.
+- Citation hỗ trợ đúng entity, metric và period.
+- Claim graph không có node mồ côi hoặc edge trỏ tới ID không tồn tại.
+- Counterpoint tham chiếu claim hợp lệ ở cả hai phía.
+- Chapter không dùng claim chưa audit làm thesis/takeaway mà không disclosure.
 
-### 5D. Editorial
+### 5D. Editorial/narrative
 
-Narrative liền mạch; chương cân đối theo bằng chứng; không lặp; kết luận không mạnh hơn evidence.
+Narrative liền mạch; chương cân đối theo bằng chứng; không lặp; centerpiece thực sự làm rõ luận điểm; takeaway không mạnh hơn evidence; Reader mode không che giấu caveat trọng yếu.
 
 Chỉ publish khi quality score ≥85/100 và không có hard fail.
 
-Xem `references/desk_research_04_audit_templates.md`.
-
 ## Bước 6 — Output engineering và technical QA
 
-### HTML Longform
+### Reader/Research mode
 
-- copy `assets/article_template.html`;
-- mỗi chương là một `<section>`;
-- component density 2-4/chương;
-- KPI, table, chart, callout, timeline, glossary, scenario/sensitivity lab;
-- numbered citations cho bài nhiều số;
-- minimap/progress/presentation đồng bộ section;
-- responsive mobile-first, print mode, lazy loading;
-- chart có source, unit, period, transformation, limitation và fallback table.
+**Reader mode** mặc định:
 
-Theme mặc định: dark slate-900; Amber cho bài tư duy/nhân quả, Blue cho policy/data.
+- ưu tiên guiding question, narrative, visual và takeaway;
+- ẩn claim ID, formula và chi tiết provenance khỏi luồng chính;
+- vẫn giữ caveat trọng yếu và link nguồn tối thiểu.
 
-### Scenario & Sensitivity Lab
+**Research mode**:
 
-Kích hoạt khi báo cáo có ít nhất một kết quả phụ thuộc rõ vào giả định có thể thay đổi, ví dụ: tăng trưởng doanh thu, biên lợi nhuận, NIM, cost of credit, lãi suất, tỷ giá, multiple, cap rate, lạm phát hoặc chi phí vốn.
+- hiện claim ID, evidence class, epistemic status, source, formula/input, uncertainty, graph relations và counterpoint mapping.
 
-Mỗi lab tối thiểu phải có:
+Hai mode phải dùng cùng DOM/data; không tạo hai bản nội dung có thể lệch số liệu.
 
-1. **Baseline:** giá trị gốc, nguồn, kỳ và trạng thái `FACT`/`DERIVED`.
-2. **Controls:** 1-5 biến; mỗi biến có label, đơn vị, min, max, step, default và lý do chọn miền.
-3. **Model:** một hàm tính thuần, công thức công khai, không dùng số ngẫu nhiên và không gọi mạng.
-4. **Outputs:** KPI kết quả cập nhật trực tiếp, có đơn vị và quy tắc làm tròn.
-5. **Dynamic chart:** ít nhất một trong các dạng:
-   - one-way sensitivity line với điểm hiện tại;
-   - tornado chart theo thay đổi so với baseline;
-   - breakeven curve;
-   - two-way heatmap nếu dùng ECharts hoặc plugin đã khóa phiên bản;
-   - waterfall bridge từ baseline sang scenario.
-6. **Actions:** Reset; preset Bear/Base/Bull khi phù hợp; xuất JSON/CSV là tùy chọn.
-7. **Disclosure:** nhãn `SCENARIO`, công thức, giả định giữ nguyên, limitation và fallback table.
+### Sticky-scroll
 
-Quy tắc kỹ thuật:
+- desktop: narrative steps và sticky visual đồng bộ bằng `IntersectionObserver`;
+- mobile: hủy sticky, xếp dọc step → visual/detail;
+- hỗ trợ keyboard, reduced motion và print fallback;
+- mỗi step có `data-step`, claim IDs và fallback prose;
+- không dùng sticky-scroll nếu chỉ có 1-2 mốc hoặc visual không đổi theo step.
 
-- `input[type="range"]` phải đi cùng ô số hoặc `<output>`; hỗ trợ bàn phím và mobile.
-- Cập nhật bằng `chart.data` + `chart.update('none')`; không tạo lại chart sau mỗi lần kéo.
-- Dùng `requestAnimationFrame` hoặc debounce khi có nhiều control.
-- Một biến được chọn làm trục x; các biến còn lại giữ tại giá trị hiện hành để biểu diễn quan hệ ceteris paribus.
-- Không trộn điểm scenario vào chuỗi actual mà không phân biệt màu/nét/legend.
-- Mọi giá trị sinh từ control là `SCENARIO` hoặc `DERIVED-SCENARIO`, không được trình bày như forecast chính thức.
-- Xem `references/interactive_sensitivity.md`; các chart tĩnh khác vẫn dùng `references/chart_recipes.md`.
+Dùng `assets/narrative_components.html` và `references/narrative_publication.md`.
 
 ### QA bắt buộc
 
+- không còn `{{TOKEN}}`;
+- chart/canvas khớp;
+- không JS error, chart trống, clipping/overflow;
+- section/minimap/presentation đồng bộ;
+- Reader/Research toggle hoạt động và không làm mất nội dung;
+- sticky step active đúng khi scroll/click/keyboard;
+- mobile 390 px, tablet 768 px, desktop và print hợp lệ;
+- fallback table/prose hiện khi chart hoặc JS không tải;
+- không sinh `NaN`/`Infinity`;
+- graph/schema validator pass.
+
+Khởi tạo và QA:
+
 ```bash
-# Không còn placeholder
-grep -oE "{{[A-Z_0-9]+}}" {project}/{slug}/index.html | sort -u
+python "$SKILL_DIR/scripts/init_research_project.py" \
+  --topic "[TOPIC]" --profile custom --out ./research-project
 
-# Canvas count = new Chart count
-grep -c "<canvas" {project}/{slug}/index.html
-grep -c "new Chart" {project}/{slug}/index.html
+python "$SKILL_DIR/scripts/qa_research_project.py" ./research-project
 
-# Playwright QA
 node "$SKILL_DIR/scripts/qa_article.js" \
-  --url=file://{project}/{slug}/index.html \
+  --url=file://./research-project/index.html \
   --output=/tmp/qa-shots
 ```
 
-Sửa mọi raw token, JS error, chart trống, nav sai, clipping/overflow trước khi hoàn thành.
-
-Với Scenario & Sensitivity Lab, kiểm tra thêm:
-
-- thay đổi từng control làm KPI và chart thay đổi đúng chiều theo công thức;
-- Reset khôi phục baseline;
-- preset không vượt min/max;
-- output không sinh `NaN`, `Infinity` hoặc đơn vị sai;
-- chart resize đúng tại 390 px, 768 px và desktop;
-- fallback table hiển thị được khi Chart.js/ECharts không tải.
-
-### Research package tối thiểu
+## Research package tối thiểu
 
 ```text
 project/
@@ -270,91 +242,57 @@ project/
 ├── chart_manifest.csv
 ├── claim_audit.csv
 ├── uncertainty_register.csv
+├── chapter_schema.csv
+├── claim_graph.csv
+├── counterpoints.csv
+├── narrative_manifest.csv
 ├── paper.md hoặc index.html
 └── qa_report.md
 ```
 
-Khởi tạo và QA:
+## Chart manifest bắt buộc
 
-```bash
-python "$SKILL_DIR/scripts/init_research_project.py" \
-  --topic "[TOPIC]" --profile custom --out ./research-project
+Mỗi chart ghi: chart ID, title, analytical question, type, metrics, unit, geography, period/frequency, source IDs, transformations, data status, interpretation, limitations và fallback table. Chart tương tác bổ sung input parameters, baseline, min/max/step, formula/model version, outputs, presets, assumptions held constant và expected direction.
 
-python "$SKILL_DIR/scripts/qa_research_project.py" ./research-project
-```
-
-# Profile architecture
-
-- **Asset history:** Summary → Scope/Data → Data Quality → Regimes → Return/Volatility → Benchmark → Premium/Spread → Attribution → Scenarios → Limitations.
-- **Policy before/after:** Summary → Glossary → Data Quality → Timeline → Before/After → Outcomes → Evidence Chain → Counterfactual → Lessons → Action Matrix.
-- **Cross-country:** Summary → Phase criteria → Comparability → Data Quality → Macro Context → Household Finance → Comparison → Drivers/Exceptions → Target-country roadmap.
-- **Document consensus:** Document map → Consensus matrix → Disagreement matrix → Forecast comparison → Assumption audit → Data vintage → Implications/Risks.
-
-# Recommendation matrix bắt buộc
-
-Mỗi recommendation có: hành động, target, priority, evidence claim IDs, mechanism, impact basis, risks/trade-offs, owner, horizon, KPI/validation và trigger to revise.
-
-Không đưa lời khuyên đầu tư cá nhân hóa khi dữ liệu/suitability không đủ.
-
-# Chart manifest bắt buộc
-
-Mỗi chart ghi: chart ID, title, analytical question, type, metrics, unit, geography, period/frequency, source IDs, transformations, data status, interpretation, limitations và fallback table.
-
-Với chart tương tác bổ sung: `interactive=true`, input parameters, baseline, min/max/step, formula/model version, output metrics, preset definitions, assumptions held constant và expected direction. Chart manifest phải đủ để tái tạo cùng kết quả từ cùng input.
-
-# Hard fail
+## Hard fail
 
 Không publish nếu:
 
 - số liệu trọng yếu không có provenance;
 - nội suy/ước lượng không gắn nhãn;
-- text và chart mâu thuẫn;
+- text, table, chart hoặc narrative visual mâu thuẫn;
 - trộn đơn vị/định nghĩa;
 - causal attribution không có phương pháp;
-- mốc chính sách chưa xác minh;
 - citation không hỗ trợ claim;
-- dùng dữ liệu cũ như hiện tại;
+- claim graph có ID/edge không hợp lệ;
+- counterpoint chỉ có một phía hoặc không có evidence mapping;
+- centerpiece dùng dữ liệu minh họa nhưng không gắn `illustrative-mechanism`;
+- Reader mode ẩn caveat làm thay đổi bản chất kết luận;
+- sticky-scroll không có mobile/print fallback;
 - placeholder/JS error/chart trống/overlap;
-- control không hoạt động, sinh `NaN`/`Infinity`, hoặc kết quả không khớp công thức;
-- scenario chart không công bố baseline, miền giả định, đơn vị hoặc limitation;
-- trộn dữ liệu `FACT` và `SCENARIO` khiến người đọc hiểu nhầm;
+- control sinh `NaN`/`Infinity` hoặc kết quả không khớp công thức;
+- trộn `FACT` và `SCENARIO` khiến người đọc hiểu nhầm;
 - recommendation mạnh hơn bằng chứng;
 - lộ prompt hoặc hướng dẫn nội bộ.
 
-# Lệnh gọi mẫu
-
-```text
-/longform "Sự phát triển tài chính cá nhân tại Mỹ, Nhật, Hàn Quốc, Trung Quốc và Việt Nam" --profile cross-country-development --output paper+html
-```
-
-```text
-/longform "Chính sách BĐS Trung Quốc trước và sau 2016" --profile policy-before-after --output html
-```
-
-```text
-/longform "Giá vàng SJC 2009-2025 và premium so với vàng thế giới" --profile asset-history --output paper+html
-```
-
-# Tài nguyên
-
-Publishing engine hiện có:
+## Tài nguyên
 
 - `assets/article_template.html`
+- `assets/narrative_components.html`
+- `schemas/publication.schema.json`
 - `references/components.md`
 - `references/chart_recipes.md`
 - `references/interactive_sensitivity.md`
+- `references/narrative_publication.md`
 - `references/themes.md`
 - `references/navigation.md`
 - `references/citations.md`
 - `references/fact_check.md`
 - `references/academic_foundations.md`
-- `scripts/qa_article.js`
-
-Desk Research extension:
-
 - `references/desk_research_01_protocol.md`
 - `references/desk_research_02_data.md`
 - `references/desk_research_03_analysis.md`
 - `references/desk_research_04_audit_templates.md`
 - `scripts/init_research_project.py`
 - `scripts/qa_research_project.py`
+- `scripts/qa_article.js`
